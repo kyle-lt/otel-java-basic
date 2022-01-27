@@ -20,7 +20,7 @@ cd otel-java-basic
 docker-compose up -d
 ```
 
-4. Open the Spring PetClinic app on `http://$DOCKER_HOSTNAME:8080`, and click around for a bit.  Then, open Jaeger on `http://$DOCKER_HOSTNAME:16686`, choose `otel-java-basic` from the services drop-down menu, click the "Find Traces" button, and then choose a trace!
+4. Open the Spring PetClinic app on `http://$DOCKER_HOSTNAME:8080` (`$DOCKER_HOSTNAME` is generally `localhost`), and click around for a bit.  Then, open Jaeger on `http://$DOCKER_HOSTNAME:16686`, choose `otel-java-basic` from the services drop-down menu, click the "Find Traces" button, and then choose a trace!
 
 > If some of that didn't work, or you want to know more, read on!
 
