@@ -1,4 +1,29 @@
 # otel-java-basic
+
+## Super Quick Basic Start - Try This First!!
+
+1. Clone this repository to your local machine.
+
+```bash
+git clone https://github.com/kyle-lt/otel-java-basic.git
+```
+
+2. Change into this project's directory
+
+```bash
+cd otel-java-basic
+```
+
+3. Start the project with Docker Compose
+
+```bash
+docker-compose up -d
+```
+
+4. Open the Spring PetClinic app on `http://$DOCKER_HOSTNAME:8080`, and open Jaeger on `http://$DOCKER_HOSTNAME:16686` where `$DOCKER_HOSTNAME` is generally `localhost`.
+
+> If some of that didn't work, or you want to know more, read on!
+
 ## Overview
 This project was built in order to easily spin up a handful of services that encapsulate a basic OpenTelemetry pipeline.  
 
@@ -42,7 +67,7 @@ In order to run this project, you'll need:
 $ docker-compose up -d
 ```
 
-Open the Spring PetClinic app on `http://$DOCKER_HOSTNAME:8080`, and open Jaeger on `http://$DOCKER_HOSTNAME:16686` where `$DOCKER_HOSTNAME` is generally `localhost`.
+5. Open the Spring PetClinic app on `http://$DOCKER_HOSTNAME:8080`, and open Jaeger on `http://$DOCKER_HOSTNAME:16686` where `$DOCKER_HOSTNAME` is generally `localhost`.
 
 ## Docker Compose Services
 ### jaeger
