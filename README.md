@@ -42,6 +42,8 @@ In order to run this project, you'll need:
 $ docker-compose up -d
 ```
 
+Open the Spring PetClinic app on `http://$DOCKER_HOSTNAME:8080`, and open Jaeger on `http://$DOCKER_HOSTNAME:16686` where `$DOCKER_HOSTNAME` is generally `localhost`.
+
 ## Docker Compose Services
 ### jaeger
 Jaeger tracing backend.  
@@ -59,6 +61,13 @@ OpenTelemetry development Image, pulled from [`otel/opentelemetry-collector-dev:
 There is no UI, merely a pipeline that is configured via `appd-otel-collector-config.yaml`.
 
 
+### otel-java-basic
+Spring PetClinic app.
+
+Spring PetClinic Image, pulled from [`kjtully/otel-java-basic:latest`](https://hub.docker.com/r/kjtully/otel-java-basic) Image built from the `otel-trainig` [fork](https://github.com/kyle-lt/spring-petclinic/tree/otel-training) of the Spring PetClinic Repo
+
+By default, accessible on `http://$DOCKER_HOSTNAME:8080`.
+
 ## More Notes on Configuration
 
 ### docker-compose.yml
@@ -67,7 +76,7 @@ This file is located in the project root and manages building and running the Do
 ### .env File
 This file contains all of the environment variables that need to be populated in order for the project to run, and for the performance tools to operate.  Items that *must* be tailored to your environment are:
 
-#### AppDynamics Controller Configuration - N/A
+#### AppDynamics Controller Configuration
 This configuration is used by the AppD Hybrid Java Agent to connect to the AppD Controller of your choice.
 ```bash
 # AppD Agent
