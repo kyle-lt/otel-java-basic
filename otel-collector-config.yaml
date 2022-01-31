@@ -13,7 +13,7 @@ exporters:
     loglevel: debug
 
   jaeger:
-    endpoint: host.docker.internal:14250
+    endpoint: jaeger:14250
     insecure: true
 
 extensions:
