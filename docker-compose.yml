@@ -43,6 +43,28 @@ services:
       - "8080:8080"
     environment:
       OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
-      OTEL_RESOURCE_ATTRIBUTES: "service.name=otel-java-basic,service.namespace=kjt"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=otel-java-basic,service.namespace=kjt-otel-test"
+    depends_on:
+      - otel-collector
+  
+  # Spring Petclinic using AppD Instrumentation JAR
+  appd-java-basic:
+    image: kjtully/appd-java-basic:latest
+    container_name: appd-java-basic
+    ports:
+      - "8081:8080"
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=appd-java-basic,service.namespace=kjt-otel-test"
+      APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY: "${APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY}"
+      APPDYNAMICS_AGENT_ACCOUNT_NAME: "${APPDYNAMICS_AGENT_ACCOUNT_NAME}"
+      APPDYNAMICS_CONTROLLER_HOST_NAME: "${APPDYNAMICS_CONTROLLER_HOST_NAME}"
+      APPDYNAMICS_CONTROLLER_PORT: "${APPDYNAMICS_CONTROLLER_PORT}"
+      APPDYNAMICS_CONTROLLER_SSL_ENABLED: "${APPDYNAMICS_CONTROLLER_SSL_ENABLED}"
+      APPDYNAMICS_AGENT_APPLICATION_NAME: "${APPDYNAMICS_AGENT_APPLICATION_NAME}"
+      APPDYNAMICS_AGENT_TIER_NAME: "appd-java-basic"
+      APPDYNAMICS_AGENT_NODE_NAME: "reuse"
+      APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME: "true"
+      APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME_PREFIX: "appd-java-basic-node"
     depends_on:
       - otel-collector
