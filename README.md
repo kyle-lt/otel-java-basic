@@ -1,5 +1,14 @@
 # otel-java-basic
 
+## Overview
+This project was built in order to easily spin up a handful of services that encapsulate a basic OpenTelemetry pipeline.  There are two app services that are spun up, and they are already instrumented.  `otel-java-basic` is instrumented with the [OpenTelemetry Java Instrumentation](https://github.com/open-telemetry/opentelemetry-java-instrumentation) JAR, and `appd-java-basic` is instrumented with [AppDynamics Java Instrumentation](https://docs.appdynamics.com/22.2/en/application-monitoring/install-app-server-agents/java-agent) JAR.
+
+Both app services send OpenTelemetry Spans to the [OpenTelemetry Dev Collector](https://hub.docker.com/r/otel/opentelemetry-collector-dev).
+
+With zero configuration, the OpenTelemetry Collector sends Spans to a [Jaeger All-In-One](https://hub.docker.com/r/jaegertracing/all-in-one) backend.
+
+With some configuration, the OpenTelemetry Collector **also** sends Spans to an [AppDynamics](https://docs.appdynamics.com/22.2/en/application-monitoring/ingest-opentelemetry-trace-data) backend.
+
 ## Super Quick Basic Start - Try This First!!
 
 1. Clone this repository to your local machine.
@@ -20,12 +29,13 @@ cd otel-java-basic
 docker-compose up -d
 ```
 
-4. Open the Spring PetClinic app on `http://$DOCKER_HOSTNAME:8080` (`$DOCKER_HOSTNAME` is generally `localhost`), and click around for a bit.  Then, open Jaeger on `http://$DOCKER_HOSTNAME:16686`, choose `otel-java-basic` from the services drop-down menu, click the "Find Traces" button, and then choose a trace!
+4. Open the **OTel-Instrumented** Spring PetClinic app on `http://$DOCKER_HOSTNAME:8080` (`$DOCKER_HOSTNAME` is generally `localhost`), and click around for a bit.  
+
+5. Open the **AppD-Instrumented** Spring PetClinic app on `http://$DOCKER_HOSTNAME:8081` (`$DOCKER_HOSTNAME` is generally `localhost`), and click around for a bit.  
+
+6. Then, open Jaeger on `http://$DOCKER_HOSTNAME:16686`, choose `otel-java-basic` or `appd-java-basic` from the services drop-down menu, click the "Find Traces" button, and then choose a trace!
 
 > If some of that didn't work, or you want to know more, read on!
-
-## Overview
-This project was built in order to easily spin up a handful of services that encapsulate a basic OpenTelemetry pipeline.  
 
 > **//TODO** In addition, it has been built toward exporting OpenTelemetry Spans to AppDynamics, so there are components setup to do so, and require some futher configuration to make them work.
 
@@ -33,6 +43,7 @@ The stack consists of:
 - Jaeger
 - OpenTelemetry Collector (no agent)
 - [Spring PetClinic](https://github.com/spring-projects/spring-petclinic) with [OpenTelemetry Java Instrumentation](https://github.com/open-telemetry/opentelemetry-java-instrumentation) JAR
+- [Spring PetClinic](https://github.com/spring-projects/spring-petclinic) with [AppDynamics Java Instrumentation](https://docs.appdynamics.com/22.2/en/application-monitoring/install-app-server-agents/java-agent) JAR
 
 More information about the [Compose Services](#docker-compose-services) below.  For the most part, I am just using the latest images available.
 
@@ -51,29 +62,33 @@ In order to run this project, you'll need:
 
 ### Steps to Run
 
-   > __Note:__  If only using the Jaeger backend, **only steps 1 and 4** need to be followed! :)
+   > __Note:__  If only using the Jaeger backend (and not the AppDynamics backend), **only steps 1 and 4** need to be followed! :)
 
 1. Clone this repository to your local machine.
 2. Copy the `.env_public` file to a file named `.env` in the root project directory, and configure it appropriately.
 
-   > __IMPORTANT:__ Detailed information regarding `.env` file can be found [below](#env-file).  This __MUST__ be done for this project to work!
+   > __IMPORTANT:__ Detailed information regarding `.env` file can be found [below](#env-file).  This __MUST__ be done for this project to work **with the AppDynamics backend!**
 
 3. Copy the `otel-collector-config.yaml` file to a file named `appd-otel-collector-config.yaml` in the root project directory, and configure it appropriately.
 
-   > __IMPORTANT:__ Detailed information regarding `appd-otel-collector-config.yaml` file can be found [below](#appd-otel-collector-config.yaml-file).  This __MUST__ be done for this project to work!
+   > __IMPORTANT:__ Detailed information regarding `appd-otel-collector-config.yaml` file can be found [below](#appd-otel-collector-config.yaml-file).  This __MUST__ be done for this project to work **with the AppDynamics backend!**
 
 4. Use Docker Compose to start
 ```bash
 $ docker-compose up -d
 ```
 
-5. Open the Spring PetClinic app on `http://$DOCKER_HOSTNAME:8080`, and open Jaeger on `http://$DOCKER_HOSTNAME:16686` where `$DOCKER_HOSTNAME` is generally `localhost`.
+5. Open the **OTel-Instrumented** Spring PetClinic app on `http://$DOCKER_HOSTNAME:8080` (`$DOCKER_HOSTNAME` is generally `localhost`), and click around for a bit.  
+
+6. Open the **AppD-Instrumented** Spring PetClinic app on `http://$DOCKER_HOSTNAME:8081` (`$DOCKER_HOSTNAME` is generally `localhost`), and click around for a bit.
+
+7. Then, open Jaeger on `http://$DOCKER_HOSTNAME:16686`, choose `otel-java-basic` or `appd-java-basic` from the services drop-down menu, click the "Find Traces" button, and then choose a trace!
 
 ## Docker Compose Services
 ### jaeger
 Jaeger tracing backend.  
 
-Jaeger "all-in-one" Image, pulled from [`jaegertracing/all-in-one:latest`](https://hub.docker.com/r/jaegertracing/all-in-one).  
+Jaeger "all-in-one" Image, pulled from [`jaegertracing/all-in-one:latest`](https://hub.docker.com/r/jaegertracing/all-in-one).
 
 By default, accessible on `http://$DOCKER_HOSTNAME:16686`.
 
@@ -81,7 +96,7 @@ By default, accessible on `http://$DOCKER_HOSTNAME:16686`.
 ### otel-collector
 OpenTelemetry Collector.
 
-OpenTelemetry development Image, pulled from [`otel/opentelemetry-collector-dev:latest`](https://hub.docker.com/r/otel/opentelemetry-collector-dev).  
+OpenTelemetry development Image, pulled from [`otel/opentelemetry-collector-dev:latest`](https://hub.docker.com/r/otel/opentelemetry-collector-dev).
 
 There is no UI, merely a pipeline that is configured via `appd-otel-collector-config.yaml`.
 
