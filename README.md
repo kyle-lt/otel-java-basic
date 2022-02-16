@@ -104,9 +104,17 @@ There is no UI, merely a pipeline that is configured via `appd-otel-collector-co
 ### otel-java-basic
 Spring PetClinic app.
 
-Spring PetClinic Image, pulled from [`kjtully/otel-java-basic:latest`](https://hub.docker.com/r/kjtully/otel-java-basic) Image built from the `otel-trainig` [fork](https://github.com/kyle-lt/spring-petclinic/tree/otel-training) of the Spring PetClinic Repo
+Spring PetClinic Image, pulled from [`kjtully/otel-java-basic:latest`](https://hub.docker.com/r/kjtully/otel-java-basic) Image built from the `otel-trainig` [fork](https://github.com/kyle-lt/spring-petclinic/tree/otel-training) of the Spring PetClinic Repo.
 
 By default, accessible on `http://$DOCKER_HOSTNAME:8080`.
+
+
+### appd-java-basic
+Spring PetClinic app.
+
+Spring PetClinic Image, pulled from [`kjtully/appd-java-basic:latest`](https://hub.docker.com/r/kjtully/appd-java-basic) Image built from the `otel-trainig` [fork](https://github.com/kyle-lt/spring-petclinic/tree/otel-training) of the Spring PetClinic Repo.
+
+By default, accessible on `http://$DOCKER_HOSTNAME:8081`.
 
 ## More Notes on Configuration
 
