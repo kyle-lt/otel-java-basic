@@ -43,7 +43,7 @@ services:
       - "8080:8080"
     environment:
       OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
-      OTEL_RESOURCE_ATTRIBUTES: "service.name=otel-java-basic,service.namespace=kjt-otel-test"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=otel-java-basic,service.namespace=otel-java-basic-<YOUR_INITIALS_HERE>"
     depends_on:
       - otel-collector
   
@@ -55,7 +55,7 @@ services:
       - "8081:8080"
     environment:
       OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
-      OTEL_RESOURCE_ATTRIBUTES: "service.name=appd-java-basic,service.namespace=kjt-otel-test"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=appd-java-basic,service.namespace=otel-java-basic-<YOUR_INITIALS_HERE>"
       APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY: "${APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY}"
       APPDYNAMICS_AGENT_ACCOUNT_NAME: "${APPDYNAMICS_AGENT_ACCOUNT_NAME}"
       APPDYNAMICS_CONTROLLER_HOST_NAME: "${APPDYNAMICS_CONTROLLER_HOST_NAME}"
