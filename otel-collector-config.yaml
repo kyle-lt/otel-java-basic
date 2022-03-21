@@ -9,14 +9,14 @@ processors:
     attributes:
       - key: appdynamics.controller.account
         action: upsert
-        value: "<YOUR_APPD_ACCOUNT>"
+        value: "<appd_account>"
       - key: appdynamics.controller.host
         action: upsert
-        value: "<YOUR_APPD_ACCOUNT>.saas.appdynamics.com"
+        value: "<appd_controller_url>"
       - key: appdynamics.controller.port
         action: upsert
         value: 443
-      # Testing purposes ONLY!  This will override any existing `service.namespace` value!
+      # The below is for testing purposes ONLY!  This will override any existing `service.namespace` value!
       #- key: service.namespace
         #action: upsert
         #value: "kjt-otel-TEST01"
@@ -33,7 +33,7 @@ exporters:
       insecure: true
 
   otlphttp:
-    endpoint: <YOUR_APPD_OTEL_ENDPOINT>
+    endpoint: <your_appd_otel_endpoint>
     headers: {"x-api-key": "${X_API_KEY}"}    
 
 extensions:
