@@ -5,39 +5,9 @@ This project was built in order to easily spin up a handful of services that enc
 
 Both app services send OpenTelemetry Spans to the [OpenTelemetry Dev Collector](https://hub.docker.com/r/otel/opentelemetry-collector-dev).
 
-With zero configuration, the OpenTelemetry Collector sends Spans to a [Jaeger All-In-One](https://hub.docker.com/r/jaegertracing/all-in-one) backend.
-
-With some configuration, the OpenTelemetry Collector **also** sends Spans to an [AppDynamics](https://docs.appdynamics.com/22.2/en/application-monitoring/ingest-opentelemetry-trace-data) backend.
-
-## Super Quick Basic Start - Try This First!!
-
-1. Clone this repository to your local machine.
-
-```bash
-git clone https://github.com/kyle-lt/otel-java-basic.git
-```
-
-2. Change into this project's directory
-
-```bash
-cd otel-java-basic
-```
-
-3. Start the project with Docker Compose
-
-```bash
-docker-compose up -d
-```
-
-4. Open the **OTel-Instrumented** Spring PetClinic app on `http://$DOCKER_HOSTNAME:8080` (`$DOCKER_HOSTNAME` is generally `localhost`), and click around for a bit.  
-
-5. Open the **AppD-Instrumented** Spring PetClinic app on `http://$DOCKER_HOSTNAME:8081` (`$DOCKER_HOSTNAME` is generally `localhost`), and click around for a bit.  
-
-6. Then, open Jaeger on `http://$DOCKER_HOSTNAME:16686`, choose `otel-java-basic` or `appd-java-basic` from the services drop-down menu, click the "Find Traces" button, and then choose a trace!
-
-> If some of that didn't work, or you want to know more, read on!
-
-> **//TODO** In addition, it has been built toward exporting OpenTelemetry Spans to AppDynamics, so there are components setup to do so, and require some futher configuration to make them work.
+The OpenTelemetry Collector sends Spans to
+- [Jaeger All-In-One](https://hub.docker.com/r/jaegertracing/all-in-one) backend
+- [AppDynamics](https://docs.appdynamics.com/22.2/en/application-monitoring/ingest-opentelemetry-trace-data) backend
 
 The stack consists of:
 - Jaeger
@@ -123,15 +93,17 @@ This file is located in the project root and manages building and running the Do
 
 ### .env File
 This file contains all of the environment variables that need to be populated in order for the project to run, and for the performance tools to operate.  Items that *must* be tailored to your environment are:
+- [AppDynamics Controller Configuration](#appdynamics-controller-configuration)
+- [AppDynamics OpenTelemetry Ingestion Service API Key](#appdynamics-opentelemetry-ingestion-service-api-key)
 
 #### AppDynamics Controller Configuration
 This configuration is used by the AppD Hybrid Java Agent to connect to the AppD Controller of your choice.
 ```bash
 # AppD Agent
 APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=<access_key>
-APPDYNAMICS_AGENT_ACCOUNT_NAME=<customer1>
-APPDYNAMICS_CONTROLLER_HOST_NAME=<controller_host>
-APPDYNAMICS_CONTROLLER_PORT=<8090>
+APPDYNAMICS_AGENT_ACCOUNT_NAME=<appd_account>
+APPDYNAMICS_CONTROLLER_HOST_NAME=<appd_controller_url>
+APPDYNAMICS_CONTROLLER_PORT=<app_controller_port>
 APPDYNAMICS_CONTROLLER_SSL_ENABLED=<false_or_true>
 APPDYNAMICS_AGENT_APPLICATION_NAME=otel-java-basic
 # Tier and Node names are set in docker-compose.yml individually
@@ -148,28 +120,41 @@ X_API_KEY=<my_x_api_key>
 
 #### OpenTelemetry Processors
 The `value:` sections of the below should be configured appropriately.
-```bash
+```yaml
 processors:
   resource:
     attributes:
       - key: appdynamics.controller.account
         action: upsert
-        value: "my-appd-account"
+        value: "<appd_account>"
+        # example: "customer1"
       - key: appdynamics.controller.host
         action: upsert
-        value: "my-controller-host"
+        value: "<appd_controller_url>"
+        # example: "my-appd-controller.saas.appdynamics.com"
       - key: appdynamics.controller.port
         action: upsert
-        value: 443
+        value: <appd_controller_port>
+        # example: 443
   batch:
   ```
 
 #### OpenTelemetry Exporters
-The `endpoint:` section of the below should be configured appropriately.  Note, the `x-api-key` header is defined in the `.env` file.
-  ```bash
+The `endpoint` section of the below should be configured appropriately.  Note, the `x-api-key` header is defined in the `.env` file.
+```yaml
 exporters:
   ...
   otlphttp:
-    endpoint: https://my-appd-endpoint.com
+    endpoint: <your_appd_otel_endpoint>
+    # example: https://pdx-sls-agent-api.saas.appdynamics.com
     headers: {"x-api-key": "${X_API_KEY}"}
+```
+#### OpenTelemetry Pipeline
+The `pipelines` section within the `services` section does not need to be changed, although it should be understood that both the above `processors` and `exporters` have been defined in order to complete the pipeline.
+```yaml
+pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [resource, batch]
+      exporters: [logging, jaeger, otlphttp]
 ```
