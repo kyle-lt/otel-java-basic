@@ -35,11 +35,11 @@ In order to run this project, you'll need:
 ### Steps to Run
 
 1. Clone this repository to your local machine.
-2. Copy the `.env_public` file to a file named `.env` in the root project directory, and configure it appropriately.  More detailed notes on [specific requirements](#env-file) is down below.
+2. Copy the `.env_public` file to a file named `.env` in the root project directory, and configure it for your AppDynamics backend.  Detailed notes on [specific requirements](#env-file) is down below.
 
    > __IMPORTANT:__ The `.env` file __MUST__ be configured for this project to work **with the AppDynamics backend!**
 
-3. Edit the `OTEL_RESOURCE_ATTRIBUTES` environment variables in the `docker-comopose.yml` file for **both** services below by appending your initials using the same value as in Step 2
+3. Edit the `OTEL_RESOURCE_ATTRIBUTES` environment variables in the `docker-comopose.yml` file for **both** app services below by appending your initials using the same value as in Step 2
 - `otel-java-basic`
 - `appd-java-basic`
 
@@ -47,7 +47,7 @@ Before
 ```yaml
 OTEL_RESOURCE_ATTRIBUTES: "service.name=otel-java-basic,service.namespace=otel-java-basic-<YOUR_INITIALS_HERE>"
 ```
-After
+After (example)
 ```yaml
 OTEL_RESOURCE_ATTRIBUTES: "service.name=otel-java-basic,service.namespace=otel-java-basic-kjt"
 ```
@@ -55,8 +55,6 @@ OTEL_RESOURCE_ATTRIBUTES: "service.name=otel-java-basic,service.namespace=otel-j
    > __IMPORTANT:__ The `service.namespace` value should now match the `APPDYNAMICS_AGENT_APPLICATION_NAME` in the `.env` file
 
 4. Configure the `otel-collector-config.yaml` file in the root project directory by configuring the `processors.resource.attributes` section toward your AppDynamics backend.  More detailed notes on [specific requirements](#otel-collector-yaml-file) is down below.
-
-   > __IMPORTANT:__ The `otel-collector-config.yaml` file __MUST__ be configured for this project to work **with the AppDynamics backend!**
 
 5. Use Docker Compose to start
 ```bash
