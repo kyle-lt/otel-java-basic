@@ -39,20 +39,26 @@ In order to run this project, you'll need:
 
    > __IMPORTANT:__ Detailed information regarding `.env` file can be found [below](#env-file).  This __MUST__ be done for this project to work **with the AppDynamics backend!**
 
-3. Configure the `appd-otel-collector-config.yaml` file in the root project directory appropriately.
+3. Edit the environment variables in the `docker-comopose.yml` file for the `otel-java-basic` and `appd-java-basic` services by adjusting the `OTEL_RESOURCE_ATTRIBUTES` variable with your initials.
+
+```yaml
+OTEL_RESOURCE_ATTRIBUTES: "service.name=otel-java-basic,service.namespace=otel-java-basic-<YOUR_INITIALS_HERE>"
+```
+
+4. Configure the `appd-otel-collector-config.yaml` file in the root project directory appropriately.
 
    > __IMPORTANT:__ Detailed information regarding `appd-otel-collector-config.yaml` file can be found [below](#appd-otel-collector-config.yaml-file).  This __MUST__ be done for this project to work **with the AppDynamics backend!**
 
-4. Use Docker Compose to start
+5. Use Docker Compose to start
 ```bash
 $ docker-compose up -d
 ```
 
-5. Open the **OTel-Instrumented** Spring PetClinic app on `http://$DOCKER_HOSTNAME:8080` (`$DOCKER_HOSTNAME` is generally `localhost`), and click around for a bit.  
+6. Open the **OTel-Instrumented** Spring PetClinic app on `http://$DOCKER_HOSTNAME:8080` (`$DOCKER_HOSTNAME` is generally `localhost`), and click around for a bit.  
 
-6. Open the **AppD-Instrumented** Spring PetClinic app on `http://$DOCKER_HOSTNAME:8081` (`$DOCKER_HOSTNAME` is generally `localhost`), and click around for a bit.
+7. Open the **AppD-Instrumented** Spring PetClinic app on `http://$DOCKER_HOSTNAME:8081` (`$DOCKER_HOSTNAME` is generally `localhost`), and click around for a bit.
 
-7. Then, open Jaeger on `http://$DOCKER_HOSTNAME:16686`, choose `otel-java-basic` or `appd-java-basic` from the services drop-down menu, click the "Find Traces" button, and then choose a trace!
+8. Then, open Jaeger on `http://$DOCKER_HOSTNAME:16686`, choose `otel-java-basic` or `appd-java-basic` from the services drop-down menu, click the "Find Traces" button, and then choose a trace!
 
 ## Docker Compose Services
 ### jaeger
