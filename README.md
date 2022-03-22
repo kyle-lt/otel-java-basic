@@ -45,7 +45,7 @@ In order to run this project, you'll need:
 OTEL_RESOURCE_ATTRIBUTES: "service.name=otel-java-basic,service.namespace=otel-java-basic-<YOUR_INITIALS_HERE>"
 ```
 
-4. Configure the `appd-otel-collector-config.yaml` file in the root project directory appropriately.
+4. Configure the `otel-collector-config.yaml` file in the root project directory appropriately.
 
    > __IMPORTANT:__ Detailed information regarding `appd-otel-collector-config.yaml` file can be found [below](#appd-otel-collector-config.yaml-file).  This __MUST__ be done for this project to work **with the AppDynamics backend!**
 
