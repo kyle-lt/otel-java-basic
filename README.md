@@ -111,7 +111,7 @@ APPDYNAMICS_AGENT_ACCOUNT_NAME=<appd_account>
 APPDYNAMICS_CONTROLLER_HOST_NAME=<appd_controller_url>
 APPDYNAMICS_CONTROLLER_PORT=<app_controller_port>
 APPDYNAMICS_CONTROLLER_SSL_ENABLED=<false_or_true>
-APPDYNAMICS_AGENT_APPLICATION_NAME=otel-java-basic
+APPDYNAMICS_AGENT_APPLICATION_NAME=otel-java-basic-<YOUR_INITIALS_HERE>
 # Tier and Node names are set in docker-compose.yml individually
 ```  
 
