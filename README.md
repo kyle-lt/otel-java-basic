@@ -9,7 +9,7 @@ The OpenTelemetry Collector sends Spans to
 - [Jaeger All-In-One](https://hub.docker.com/r/jaegertracing/all-in-one) backend
 - [AppDynamics](https://docs.appdynamics.com/22.2/en/application-monitoring/ingest-opentelemetry-trace-data) backend
 
-The stack consists of:
+The full stack of services consists of:
 - Jaeger
 - OpenTelemetry Collector (no agent)
 - [Spring PetClinic](https://github.com/spring-projects/spring-petclinic) with [OpenTelemetry Java Instrumentation](https://github.com/open-telemetry/opentelemetry-java-instrumentation) JAR
@@ -39,7 +39,7 @@ In order to run this project, you'll need:
 
    > __IMPORTANT:__ Detailed information regarding `.env` file can be found [below](#env-file).  This __MUST__ be done for this project to work **with the AppDynamics backend!**
 
-3. Copy the `otel-collector-config.yaml` file to a file named `appd-otel-collector-config.yaml` in the root project directory, and configure it appropriately.
+3. Configure the `appd-otel-collector-config.yaml` file in the root project directory appropriately.
 
    > __IMPORTANT:__ Detailed information regarding `appd-otel-collector-config.yaml` file can be found [below](#appd-otel-collector-config.yaml-file).  This __MUST__ be done for this project to work **with the AppDynamics backend!**
 
