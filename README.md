@@ -1,7 +1,9 @@
 # otel-java-basic
 
 ## Overview
-This project was built in order to easily spin up a handful of services that encapsulate a basic OpenTelemetry pipeline.  There are two app services that are spun up, and they are already instrumented.  `otel-java-basic` is instrumented with the [OpenTelemetry Java Instrumentation](https://github.com/open-telemetry/opentelemetry-java-instrumentation) JAR, and `appd-java-basic` is instrumented with [AppDynamics Java Instrumentation](https://docs.appdynamics.com/22.2/en/application-monitoring/install-app-server-agents/java-agent) JAR.
+This project was built in order to easily spin up a handful of services that encapsulate a basic OpenTelemetry pipeline.  There are two app services that are spun up, and they are already instrumented.  
+- `otel-java-basic` is instrumented with the [OpenTelemetry Java Instrumentation](https://github.com/open-telemetry/opentelemetry-java-instrumentation) JAR
+- `appd-java-basic` is instrumented with [AppDynamics Java Instrumentation](https://docs.appdynamics.com/22.2/en/application-monitoring/install-app-server-agents/java-agent) JAR.
 
 Both app services send OpenTelemetry Spans to the [OpenTelemetry Dev Collector](https://hub.docker.com/r/otel/opentelemetry-collector-dev).
 
@@ -15,11 +17,11 @@ The full stack of services consists of:
 - [Spring PetClinic](https://github.com/spring-projects/spring-petclinic) with [OpenTelemetry Java Instrumentation](https://github.com/open-telemetry/opentelemetry-java-instrumentation) JAR
 - [Spring PetClinic](https://github.com/spring-projects/spring-petclinic) with [AppDynamics Java Instrumentation](https://docs.appdynamics.com/22.2/en/application-monitoring/install-app-server-agents/java-agent) JAR
 
-More information about the [Compose Services](#docker-compose-services) below.  For the most part, I am just using the latest images available.
+More information about the [Compose Services](#docker-compose-services) can be found below.
 
    > __Note:__  This project was built/tested only on Docker for Mac, and uses Docker-Compose
 
-It's not necessary to build anything in this project.  All images can be pulled from Docker Hub when you run with [Docker Compose](#quick-start-with-docker-compose).
+It's **not necessary to build anything** in this project.  All images can be pulled from Docker Hub when you run with [Docker Compose](#quick-start-with-docker-compose).
 
 ## Quick Start with Docker Compose
 ### Prerequisites
@@ -35,19 +37,28 @@ In order to run this project, you'll need:
    > __Note:__  If only using the Jaeger backend (and not the AppDynamics backend), **only steps 1 and 4** need to be followed! :)
 
 1. Clone this repository to your local machine.
-2. Copy the `.env_public` file to a file named `.env` in the root project directory, and configure it appropriately.
+2. Copy the `.env_public` file to a file named `.env` in the root project directory, and configure it appropriately.  More detailed notes on [specific requirements](#env-file) is down below.
 
-   > __IMPORTANT:__ Detailed information regarding `.env` file can be found [below](#env-file).  This __MUST__ be done for this project to work **with the AppDynamics backend!**
+   > __IMPORTANT:__ The `.env` file __MUST__ be configured for this project to work **with the AppDynamics backend!**
 
-3. Edit the environment variables in the `docker-comopose.yml` file for the `otel-java-basic` and `appd-java-basic` services by adjusting the `OTEL_RESOURCE_ATTRIBUTES` variable with your initials.
+3. Edit the `OTEL_RESOURCE_ATTRIBUTES` environment variables in the `docker-comopose.yml` file for **both** services below by appending your initials using the same value as in Step 2
+- `otel-java-basic`
+- `appd-java-basic`
 
+Before 
 ```yaml
 OTEL_RESOURCE_ATTRIBUTES: "service.name=otel-java-basic,service.namespace=otel-java-basic-<YOUR_INITIALS_HERE>"
 ```
+After
+```yaml
+OTEL_RESOURCE_ATTRIBUTES: "service.name=otel-java-basic,service.namespace=otel-java-basic-kjt"
+```
 
-4. Configure the `otel-collector-config.yaml` file in the root project directory appropriately.
+   > __IMPORTANT:__ The `service.namespace` value should now match the `APPDYNAMICS_AGENT_APPLICATION_NAME` in the `.env` file
 
-   > __IMPORTANT:__ Detailed information regarding `appd-otel-collector-config.yaml` file can be found [below](#otel-collector-yaml-file).  This __MUST__ be done for this project to work **with the AppDynamics backend!**
+4. Configure the `otel-collector-config.yaml` file in the root project directory by configuring the `processors.resource.attributes` section toward your AppDynamics backend.  More detailed notes on [specific requirements](#otel-collector-yaml-file) is down below.
+
+   > __IMPORTANT:__ The `otel-collector-config.yaml` file __MUST__ be configured for this project to work **with the AppDynamics backend!**
 
 5. Use Docker Compose to start
 ```bash
@@ -104,6 +115,9 @@ This file contains all of the environment variables that need to be populated in
 
 #### AppDynamics Controller Configuration
 This configuration is used by the AppD Hybrid Java Agent to connect to the AppD Controller of your choice.
+
+> __IMPORTANT:__ Make note of the value that you replace `<YOUR_INITIALS_HERE>` in the env var `APPDYNAMICS_AGENT_APPLICATION_NAME` - you'll use it again in the next step during the configuration of the `docker-compose.yml` file.
+
 ```bash
 # AppD Agent
 APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=<access_key>
