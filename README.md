@@ -34,8 +34,6 @@ In order to run this project, you'll need:
 
 ### Steps to Run
 
-   > __Note:__  If only using the Jaeger backend (and not the AppDynamics backend), **only steps 1 and 4** need to be followed! :)
-
 1. Clone this repository to your local machine.
 2. Copy the `.env_public` file to a file named `.env` in the root project directory, and configure it appropriately.  More detailed notes on [specific requirements](#env-file) is down below.
 
@@ -118,7 +116,7 @@ This configuration is used by the AppD Hybrid Java Agent to connect to the AppD 
 
 > __IMPORTANT:__ Make note of the value that you replace `<YOUR_INITIALS_HERE>` in the env var `APPDYNAMICS_AGENT_APPLICATION_NAME` - you'll use it again in the next step during the configuration of the `docker-compose.yml` file.
 
-```bash
+```env
 # AppD Agent
 APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=<access_key>
 APPDYNAMICS_AGENT_ACCOUNT_NAME=<appd_account>
