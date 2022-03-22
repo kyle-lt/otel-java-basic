@@ -43,11 +43,11 @@ In order to run this project, you'll need:
 - `otel-java-basic`
 - `appd-java-basic`
 
-Before 
+    Before 
 ```yaml
 OTEL_RESOURCE_ATTRIBUTES: "service.name=otel-java-basic,service.namespace=otel-java-basic-<YOUR_INITIALS_HERE>"
 ```
-After (example)
+    After
 ```yaml
 OTEL_RESOURCE_ATTRIBUTES: "service.name=otel-java-basic,service.namespace=otel-java-basic-kjt"
 ```
