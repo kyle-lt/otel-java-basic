@@ -112,9 +112,9 @@ This file contains all of the environment variables that need to be populated in
 - [AppDynamics OpenTelemetry Ingestion Service API Key](#appdynamics-opentelemetry-ingestion-service-api-key)
 
 #### AppDynamics Controller Configuration
-This configuration is used by the AppD Hybrid Java Agent to connect to the AppD Controller of your choice.
+This configuration is used by the AppD Hybrid Java Agent to connect to the AppD Controller of your choice.  Replace all values in `<angle_brackets>` with the actual values per your AppDynamics backend.
 
-> __IMPORTANT:__ Make note of the value that you replace `<YOUR_INITIALS_HERE>` in the env var `APPDYNAMICS_AGENT_APPLICATION_NAME` - you'll use it again in the next step during the configuration of the `docker-compose.yml` file.
+> __IMPORTANT:__ The `<YOUR_INITIALS_HERE>` in the env var `APPDYNAMICS_AGENT_APPLICATION_NAME` is free-form, but ends up as part of the Application name in AppDynamics, so it should be meaningful.  Also, make note of the value that you use for `<YOUR_INITIALS_HERE>`  - you'll use it again in the next step during the configuration of the `docker-compose.yml` file.
 
 ```env
 # AppD Agent
@@ -128,8 +128,8 @@ APPDYNAMICS_AGENT_APPLICATION_NAME=otel-java-basic-<YOUR_INITIALS_HERE>
 ```  
 
 #### AppDynamics OpenTelemetry Ingestion Service API Key
-API Key for the AppDynamics OpenTelemetry Ingestion Service.
-```bash
+API Key for the AppDynamics OpenTelemetry Ingestion Service.  Replace the value `<my_x_api_key>` with the OpenTelemetry API Key for the AppDynamics backend.
+```env
 # AppD OTel Ingest API Key
 X_API_KEY=<my_x_api_key>
 ```
@@ -137,7 +137,15 @@ X_API_KEY=<my_x_api_key>
 ### OTel Collector YAML File
 
 #### OpenTelemetry Processors
-The `value:` sections of the below should be configured appropriately.
+The `value:` sections of the below should be configured by replacing all values in `<angle_brackets>` with the actual values per your AppDynamics backend - you'd reuse values that you've already configured in the `.env` file.
+
+| `.env` file value | `otel-collector.yaml` file value |
+| ----------------- | -------------------------------- |
+| `APPDYNAMICS_AGENT_ACCOUNT_NAME` | `appdynamics.controller.account` |
+| `APPDYNAMICS_CONTROLLER_HOST_NAME` | `appdynamics.controller.host` |
+| `APPDYNAMICS_CONTROLLER_PORT` | `appdynamics.controller.port` |
+
+
 ```yaml
 processors:
   resource:
@@ -158,7 +166,9 @@ processors:
   ```
 
 #### OpenTelemetry Exporters
-The `endpoint` section of the below should be configured appropriately.  Note, the `x-api-key` header is defined in the `.env` file.
+The `endpoint` section of the below should be configured by replacing `<your_appd_otel_endpoint>` with the proper AppDynamics API endpoint defined in [the docs](https://docs.appdynamics.com/22.3/en/application-monitoring/ingest-opentelemetry-trace-data#IngestOpenTelemetryTraceData-ConfiguretheOpenTelemetryCollectorYAMLFile) - example for US endpoint below.  
+
+Note, the `x-api-key` header is already defined in the `.env` file, so there is no need to define it here.
 ```yaml
 exporters:
   ...
