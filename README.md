@@ -47,7 +47,7 @@ OTEL_RESOURCE_ATTRIBUTES: "service.name=otel-java-basic,service.namespace=otel-j
 
 4. Configure the `otel-collector-config.yaml` file in the root project directory appropriately.
 
-   > __IMPORTANT:__ Detailed information regarding `appd-otel-collector-config.yaml` file can be found [below](#appd-otel-collector-config.yaml-file).  This __MUST__ be done for this project to work **with the AppDynamics backend!**
+   > __IMPORTANT:__ Detailed information regarding `appd-otel-collector-config.yaml` file can be found [below](#otel-collector-yaml-file).  This __MUST__ be done for this project to work **with the AppDynamics backend!**
 
 5. Use Docker Compose to start
 ```bash
@@ -122,7 +122,7 @@ API Key for the AppDynamics OpenTelemetry Ingestion Service.
 X_API_KEY=<my_x_api_key>
 ```
 
-### appd-otel-collector-config.yaml File
+### OTel Collector YAML File
 
 #### OpenTelemetry Processors
 The `value:` sections of the below should be configured appropriately.
