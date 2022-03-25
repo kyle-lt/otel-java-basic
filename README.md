@@ -83,6 +83,14 @@ $ docker-compose up -d
 
 <br />
 
+9. Tear down the Compose Services 
+
+```bash
+$ docker-compose down
+```
+
+<br />
+
 ## Docker Compose Services
 ### jaeger
 Jaeger tracing backend.  
