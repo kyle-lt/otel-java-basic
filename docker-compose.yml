@@ -68,3 +68,25 @@ services:
       APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME_PREFIX: "appd-java-basic-node"
     depends_on:
       - otel-collector
+  jmeter-java:
+    image: leandrovo/jmeter:1.0
+    container_name: jmeter-appd
+    restart: always
+    volumes:
+      - ${PWD}/load:/opt/jmeter/scripts
+    environment:
+      petclinic_host: "appd-java-basic"
+      petclinic_port: "8080"
+    depends_on:
+      - appd-java-basic
+  jmeter-otel:
+    image: leandrovo/jmeter:1.0
+    container_name: jmeter-otel
+    restart: always
+    volumes:
+      - ${PWD}/load:/opt/jmeter/scripts
+    environment:
+      petclinic_host: "otel-java-basic"
+      petclinic_port: "8080"       
+    depends_on:
+      - otel-java-basic
